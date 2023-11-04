@@ -8,9 +8,17 @@
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.9.10"
+    id("org.flywaydb.flyway") version "9.19.4"
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+}
+
+flyway {
+    url = "jdbc:sqlite:personal_expense_tracker.db"
+    user = ""
+    password = ""
+    locations = arrayOf("filesystem:src/main/resources/db/migration")
 }
 
 repositories {
@@ -29,12 +37,17 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:32.1.1-jre")
+
+    // Database
+    implementation("org.xerial:sqlite-jdbc:3.42.0.0")
+    // Database migration tool
+    implementation("org.flywaydb:flyway-core:9.19.4")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(18))
     }
 }
 
